@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Death From Above on Hyper RPG</title>
+    <script type="text/javascript">
+      function getViewport() {
+
+        var viewPortWidth;
+        var viewPortHeight;
+
+        // the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
+        if (typeof window.innerWidth != 'undefined') {
+          viewPortWidth = window.innerWidth,
+          viewPortHeight = window.innerHeight
+        }
+
+        // IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
+        else if (typeof document.documentElement != 'undefined'
+              && typeof document.documentElement.clientWidth !=
+              'undefined' && document.documentElement.clientWidth != 0) {
+          viewPortWidth = document.documentElement.clientWidth,
+          viewPortHeight = document.documentElement.clientHeight
+        }
+
+        // older versions of IE
+        else {
+          viewPortWidth = document.getElementsByTagName('body')[0].clientWidth,
+          viewPortHeight = document.getElementsByTagName('body')[0].clientHeight
+        }
+        return [viewPortWidth, viewPortHeight];
+      }
+    </script>
+
+    <script src= "http://player.twitch.tv/js/embed/v1.js"></script>
+    <style type="text/css">
+      #twitchChat {
+        position: absolute;
+        left: auto;
+        right: 0px;
+        top: 0px;
+        width: 25%;
+        height: 100%;
+        /* border: medium solid black; */
+        padding: 0px;
+        margin: 0px;
+        z-index: 1
+      }
+      #twitchPlayer {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 75%;
+        height: auto;
+        /* border: medium solid black; */
+        padding: 0px;
+        z-index: 2
+      }
+      #gameData {
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        width: 75%;
+        height: 20%;
+        /* border: medium solid black; */
+        padding: 0px;
+        margin: 0px;
+        z-index: 2;
+      }
+      #gameData #Marauders {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        height: 100%;
+        width: 40%;
+      }
+      #gameData #OpFor {
+        position: absolute;
+        left: 40%;
+        bottom: 0px;
+        height: 100%;
+        width: 40%;
+      }
+      #gameData #Neutral{
+        position: absolute;
+        left: 80%;
+        bottom: 0px;
+        height: 100%;
+        width: 20%;
+      }
+      #gameData table {
+        width: 100%;
+        height: 100%;
+        border: 1px solid black;
+        border-collapse: collapse;
+        text-align: center;
+      }
+      .grey {
+        background-color: #CCC;
+        width: 40%;
+        text-align: left;
+      }
+      #Neutral .grey {
+        background-color: #CCC;
+        width: 70%;
+        text-align: left;
+      }
+      #gameData * .gameDataTitle {
+        text-align: center;
+        font-weight: bold;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div id="twitchPlayer"></div>
+    <script type="text/javascript">
+        var vp = getViewport();
+        var options = {
+            width: vp[0]*.75-15,
+            height: (vp[0]*.75-15)*9/16,
+            channel: "hyperrpg",
+            //video: "{VIDEO_ID}"
+        };
+        var player = new Twitch.Player("twitchPlayer", options);
+        player.setVolume(0.5);
+    </script>
+    <div id="twitchChat"><iframe frameborder="0" scrolling="no" id="chat_embed"
+      src="http://www.twitch.tv/hyperrpg/chat" height="100%" width="100%"></iframe></div>
+    <div id="gameData">
+      <div id="Marauders">
+        <div class="gameDataTitle">Marauders</div>
+        <table>
+          <tr>
+            <td colspan="2" class="grey">#CloseCall</td><td>0</td><td colspan="2" class="grey">#Intel</td><td>0</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="grey">#Coryphee</td><td>0</td><td colspan="2" class="grey">#Talon</td><td>0</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="grey">#Valravn</td><td>0</td><td colspan="2" class="grey">#Jackal</td><td>0</td>
+          </tr>
+        </table>
+      </div>
+      <div id="OpFor">
+        <div class="gameDataTitle">Opposition Force</div>
+        <table>
+          <tr>
+            <td colspan="2" class="grey">#Reroll</td><td>0</td><td colspan="2" class="grey">#SmokeScreen</td><td>0</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="grey">#OpForBonus</td><td>0</td><td colspan="2" class="grey">#OpForBonus2</td><td>0</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="grey">#OpForSpecial</td><td>0</td><td colspan="2" class="grey">--</td><td>0</td>
+          </tr>
+        </table>
+      </div>
+      <div id="Neutral">
+        <div class="gameDataTitle">Neutral</div>
+        <table>
+          <tr>
+            <td colspan="2" class="grey">#Disaster</td><td>0</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="grey">#MapHazard</td><td>0</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
