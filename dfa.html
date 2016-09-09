@@ -205,7 +205,7 @@
                   if (mt.length > 5 && (mt.match(/<td/g || []).length % mtc) == 0) {
                     mt += "</tr><tr>";
                   }
-                  mt += "<td colspan='2' class='grey'>" + x['tag'] + "</td><td>" + x['count'] + ' of ' + x['purchase_limit'] + '</td>';
+                  mt += "<td colspan='2' class='grey'>" + x['tag'] + "</td><td>" + x['count'] + '/' + x['purchase_limit'] + '</td>';
                 }
               }
               console.log(mt + '</tr>');
