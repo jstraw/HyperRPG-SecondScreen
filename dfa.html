@@ -179,14 +179,12 @@
         var xhr = new XMLHttpRequest();
         xhr.open('GET', 'http://dfa.straylogic.com/data.php?show=16');
         xhr.onload = function () {
-          console.log("Updating Tables - XHR Received")
           if (xhr.status == 200) {
             var j = JSON.parse(xhr.responseText);
             // known teams: 'Pre Battle', "'Mechs", 'Marauders', 'OpFor', 'Neutral'
             var inBattle = true;
             for (i in j['data']) {
               var x = j['data'][i];
-              console.log("UT - Pre Battle? " + x)
               if (x['team'] == "Pre Battle") { inBattle = false; break;}
             }
             var mtc = 4, otc=4, ntc=2;
@@ -209,6 +207,9 @@
                   }
                 }
               }
+              document.getElementById('MaraudersTable').innerHTML = mt;
+              document.getElementById('MaraudersTable').innerHTML = '<tr><td colspan="2">-</td><td>-</td><td colspan="2">-</td><td>-</td></tr>';
+              document.getElementById('NeutralTable').innerHTML = nt;
             } else {
               console.log("Updating Tables - In Battle")
               document.getElementById('MaraudersTitle').innerHTML = "Marauders";
