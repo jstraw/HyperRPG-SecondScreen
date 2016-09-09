@@ -183,6 +183,7 @@
             }
             var mtc = 4, otc=4, ntc=2;
             if (!inBattle) {
+              console.log("Updating Tables - Not In Battle")
               document.getElementById('MaraudersTitle').innerHTML = "Pre Battle";
               document.getElementById('OpForTitle').innerHTML = "N/A";
               document.getElementById('NeutralTitle').innerHTML = "'Mechs";
@@ -201,6 +202,7 @@
                 }
               }
             } else {
+              console.log("Updating Tables - In Battle")
               document.getElementById('MaraudersTitle').innerHTML = "Marauders";
               document.getElementById('OpForTitle').innerHTML = "OpFor";
               document.getElementById('NeutralTitle').innerHTML = "Neutral";
