@@ -184,7 +184,8 @@
             var j = JSON.parse(xhr.responseText);
             // known teams: 'Pre Battle', "'Mechs", 'Marauders', 'OpFor', 'Neutral'
             var inBattle = true;
-            for (x in j['data']) {
+            for (i in j['data']) {
+              var x = j['data'][i];
               console.log("UT - Pre Battle? " + x)
               if (x['team'] == "Pre Battle") { inBattle = false; break;}
             }
