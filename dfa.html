@@ -219,9 +219,9 @@
         console.log("Updating Tables - sending xhr");
         xhr.send();
         console.log("Updating Tables - xhr sent");
+        setTimeout(updateTables, 30000)
       }
-      console.log("Setting Interval for updateTables")
-      window.setInterval(updateTables, 30000);
+      updateTables();
       </script>
     </div>
   </body>
