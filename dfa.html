@@ -194,7 +194,8 @@
               document.getElementById('OpForTitle').innerHTML = "N/A";
               document.getElementById('NeutralTitle').innerHTML = "'Mechs";
               var mt = "<tr>", ot = "<tr>", nt = "</tr>";
-              for (x in j['data']) {
+              for (i in j['data']) {
+                var x = j['data'][i];
                 if (x['team'] == "'Mechs'") {
                   nt += "<td colspan='2' class='grey'>" + x['tag'] + " (" + x['title'] + ")</td><td>$" + x['remaining'] + "Remaining</td>";
                   if ((nt.match(/<td/g || []).length % ntc) == 0) {
@@ -207,6 +208,8 @@
                   }
                 }
               }
+              console.log(mt);
+              console.log(nt);
               document.getElementById('MarauderTable').innerHTML = mt;
               document.getElementById('OpForTable').innerHTML = '<tr><td colspan="2">-</td><td>-</td><td colspan="2">-</td><td>-</td></tr>';
               document.getElementById('NeutralTable').innerHTML = nt;
