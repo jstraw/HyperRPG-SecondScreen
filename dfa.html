@@ -200,7 +200,6 @@
                   if (ot.length > 5 && (ot.match(/<td/g || []).length % 2) == 0) {
                     ot += "</tr><tr>";
                   }
-                  if (x['count'] >= x['purchase_limit']) { x['remaining'] = 0;}
                   ot += "<td colspan='2' class='grey'>" + x['tag'] + " (" + x['title'] + ")</td><td>$" + x['remaining'] + " Remaining</td>";
                 } else if (x['team'] == 'Pre Battle') {
                   if (mt.length > 5 && (mt.match(/<td/g || []).length % mtc) == 0) {
