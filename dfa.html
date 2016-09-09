@@ -171,7 +171,7 @@
       function updateTables() {
         console.log("Updating Tables - dfa 2nd screen -")
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://dfa.straylogic.com/data.php?query=' + encodeURIComponent('select+*+from+tiptags+where+showid=16+and+published=1+order+by+display_order,+team,+sort_order,price+desc'));
+        xhr.open('GET', 'http://dfa.straylogic.com/data.php?show=16');
         xhr.onload = function () {
           console.log("Updating Tables - XHR Received")
           if (xhr.status == 200) {
@@ -179,7 +179,8 @@
             // known teams: 'Pre Battle', "'Mechs", 'Marauders', 'OpFor', 'Neutral'
             var inBattle = true;
             for (x in j['data']) {
-              if (x['team'] == "Pre Battle") { inBattle = false; }
+              console.log("UT - Pre Battle? " + x['team'])
+              if (x['team'] == "Pre Battle") { inBattle = false; break;}
             }
             var mtc = 4, otc=4, ntc=2;
             if (!inBattle) {
