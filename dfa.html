@@ -188,12 +188,12 @@
               if (x['team'] == "Pre Battle") { inBattle = false; break;}
             }
             var mtc = 4, otc=4, ntc=2;
+            var mt = "<tr>", ot = "<tr>", nt = "<tr>";
             if (!inBattle) {
               console.log("Updating Tables - Not In Battle")
               document.getElementById('MaraudersTitle').innerHTML = "Pre Battle";
               document.getElementById('OpForTitle').innerHTML = "'Mechs'";
               document.getElementById('NeutralTitle').innerHTML = "N/A";
-              var mt = "<tr>", ot = "<tr>", nt = "<tr>";
               for (i in j['data']) {
                 var x = j['data'][i];
                 if (x['team'] == "'Mechs") {
@@ -207,6 +207,8 @@
                   }
                   mt += "<td colspan='2' class='grey'>" + x['tag'] + "</td><td>" + x['count'] + '/' + x['purchase_limit'] + '</td>';
                 }
+              } else {
+
               }
               console.log(mt + '</tr>');
               console.log(ot + '</tr>');
@@ -218,6 +220,30 @@
               document.getElementById('MaraudersTitle').innerHTML = "Marauders";
               document.getElementById('OpForTitle').innerHTML = "OpFor";
               document.getElementById('NeutralTitle').innerHTML = "Neutral";
+              for (i in j['data']) {
+                var x = j['data'][i];
+                if (x['team'] == "Neutral") {
+                  if (nt.length > 5 && (nt.match(/<td/g || []).length % ntc) == 0) {
+                    nt += "</tr><tr>";
+                  }
+                  nt += "<td colspan='2' class='grey'>" + x['tag'] + "</td><td>" + x['count'] + "</td>";
+                } else if (x['team'] == "OpFor") {
+                  if (ot.length > 5 && (ot.match(/<td/g || []).length % otc) == 0) {
+                    ot += "</tr><tr>";
+                  }
+                  ot += "<td colspan='2' class='grey'>" + x['tag'] + "</td><td>" + x['count'] + "</td>";
+                } else if (x['team'] == 'Marauders') {
+                  if (mt.length > 5 && (mt.match(/<td/g || []).length % mtc) == 0) {
+                    mt += "</tr><tr>";
+                  }
+                  mt += "<td colspan='2' class='grey'>" + x['tag'] + "</td><td>" + x['count'] + '</td>';
+                }
+              }
+              console.log(mt + '</tr>');
+              console.log(ot + '</tr>');
+              document.getElementById('MarauderTable').innerHTML = mt + '</tr>';
+              document.getElementById('NeutralTable').innerHTML = '<tr><td colspan="2">-</td><td>-</td>';
+              document.getElementById('OpForTable').innerHTML = ot + '</tr>';
             }
           }
         }
