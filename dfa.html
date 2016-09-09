@@ -34,6 +34,9 @@
 
     <script src= "http://player.twitch.tv/js/embed/v1.js"></script>
     <style type="text/css">
+      * {
+        font-family:sans-serif;
+      }
       #twitchChat {
         position: absolute;
         left: auto;
@@ -55,6 +58,9 @@
         /* border: medium solid black; */
         padding: 0px;
         z-index: 2
+      }
+      .player-video {
+        margin: auto;
       }
       #gameData {
         position: absolute;
@@ -179,7 +185,7 @@
             // known teams: 'Pre Battle', "'Mechs", 'Marauders', 'OpFor', 'Neutral'
             var inBattle = true;
             for (x in j['data']) {
-              console.log("UT - Pre Battle? " + x['team'])
+              console.log("UT - Pre Battle? " + x)
               if (x['team'] == "Pre Battle") { inBattle = false; break;}
             }
             var mtc = 4, otc=4, ntc=2;
