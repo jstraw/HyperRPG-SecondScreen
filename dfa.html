@@ -200,14 +200,14 @@
                   if (ot.length > 5 && (ot.match(/<td/g || []).length % 2) == 0) {
                     ot += "</tr><tr>";
                   }
-                  ot += "<td colspan='2' class='grey'>" + x['tag'] + " (" + x['title'] + ")</td><td>$" + x['remaining'] + "Remaining</td>";
+                  ot += "<td colspan='2' class='grey'>" + x['tag'] + " (" + x['title'] + ")</td><td>$" + x['remaining'] + " Remaining</td>";
                 } else if (x['team'] == 'Pre Battle') {
                   if (mt.length > 5 && (mt.match(/<td/g || []).length % mtc) == 0) {
                     mt += "</tr><tr>";
                   }
                   mt += "<td colspan='2' class='grey'>" + x['tag'] + "</td><td>" + x['count'] + '/' + x['purchase_limit'] + '</td>';
                 }
-              } 
+              }
               console.log(mt + '</tr>');
               console.log(ot + '</tr>');
               document.getElementById('MarauderTable').innerHTML = mt + '</tr>';
