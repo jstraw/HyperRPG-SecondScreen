@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Death From Above on Hyper RPG</title>
+    <script src= "http://player.twitch.tv/js/embed/v1.js"></script>
     <script type="text/javascript">
       // https://andylangton.co.uk/blog/development/get-viewportwindow-size-width-and-height-javascript
       function getViewport() {
@@ -32,7 +33,7 @@
       }
     </script>
 
-    <script src= "https://player.twitch.tv/js/embed/v1.js"></script>
+    <script src= "http://player.twitch.tv/js/embed/v1.js"></script>
     <style type="text/css">
       * {
         font-family:sans-serif;
@@ -200,6 +201,7 @@
                   if (ot.length > 5 && (ot.match(/<td/g || []).length % 2) == 0) {
                     ot += "</tr><tr>";
                   }
+                  if (x['count'] >= x['purchase_limit']) { x['remaining'] = 0;}
                   ot += "<td colspan='2' class='grey'>" + x['tag'] + " (" + x['title'] + ")</td><td>$" + x['remaining'] + " Remaining</td>";
                 } else if (x['team'] == 'Pre Battle') {
                   if (mt.length > 5 && (mt.match(/<td/g || []).length % mtc) == 0) {
