@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>Death From Above on Hyper RPG</title>
-    <script src= "http://player.twitch.tv/js/embed/v1.js"></script>
     <script type="text/javascript">
       // https://andylangton.co.uk/blog/development/get-viewportwindow-size-width-and-height-javascript
       function getViewport() {
@@ -125,7 +124,7 @@
         var vp = getViewport();
         var options = {
             width: vp[0]*.75-15,
-            height: int((vp[0]*.75-15)*9/16),
+            height: (vp[0]*.75-15)*9/16,
             channel: "hyperrpg",
             //video: "{VIDEO_ID}"
         };
