@@ -124,7 +124,7 @@
         var vp = getViewport();
         var options = {
             width: vp[0]*.75-15,
-            height: (vp[0]*.75-15)*9/16,
+            height: int((vp[0]*.75-15)*9/16),
             channel: "hyperrpg",
             //video: "{VIDEO_ID}"
         };
@@ -240,8 +240,9 @@
               }
               console.log(mt + '</tr>');
               console.log(ot + '</tr>');
+              console.log(nt + '</tr>');
               document.getElementById('MarauderTable').innerHTML = mt + '</tr>';
-              document.getElementById('NeutralTable').innerHTML = '<tr><td colspan="2">-</td><td>-</td>';
+              document.getElementById('NeutralTable').innerHTML = nt + '</tr>';
               document.getElementById('OpForTable').innerHTML = ot + '</tr>';
             }
           }
