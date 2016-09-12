@@ -1,259 +1,332 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Death From Above on Hyper RPG</title>
-    <script type="text/javascript">
-      // https://andylangton.co.uk/blog/development/get-viewportwindow-size-width-and-height-javascript
-      function getViewport() {
+    <title>Death from Above! Battletech on Hyper RPG</title>
 
-        var viewPortWidth;
-        var viewPortHeight;
+    <script src= "https://player.twitch.tv/js/embed/v1.js"></script>
 
-        // the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
-        if (typeof window.innerWidth != 'undefined') {
-          viewPortWidth = window.innerWidth,
-          viewPortHeight = window.innerHeight
-        }
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
 
-        // IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
-        else if (typeof document.documentElement != 'undefined'
-              && typeof document.documentElement.clientWidth !=
-              'undefined' && document.documentElement.clientWidth != 0) {
-          viewPortWidth = document.documentElement.clientWidth,
-          viewPortHeight = document.documentElement.clientHeight
-        }
-
-        // older versions of IE
-        else {
-          viewPortWidth = document.getElementsByTagName('body')[0].clientWidth,
-          viewPortHeight = document.getElementsByTagName('body')[0].clientHeight
-        }
-        return [viewPortWidth, viewPortHeight];
-      }
-    </script>
-
-    <script src= "http://player.twitch.tv/js/embed/v1.js"></script>
     <style type="text/css">
       * {
-        font-family:sans-serif;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
       }
-      #twitchChat {
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+        font-size: 100%;
+        letter-spacing: -.01em;
+        color: #444;
+        background: #efeef1;
+      }
+      article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+        display: block;
+      }
+      h1, h2, h3, h4, h5, p, ul, li {
+        margin: 0;
+        padding: 0;
+        font-size: 1rem;
+        line-height: 1.4rem;
+        font-weight: 400;
+      }
+      a {
+        color: #444;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .main_column {
+        position: relative;
+        width: 100%;
+      }
+
+      #right_toggle_input {
+        display: none;
+      }
+      #right_toggle {
+        display: none;
         position: absolute;
-        left: auto;
+        top: 5px;
+        right: 345px;
+        z-index: 1;
+        width: 20px;
+        height: 20px;
+        opacity: .25;
+        cursor: pointer;
+      }
+      #right_toggle:hover {
+        opacity: .5;
+      }
+      #right_toggle:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        margin-top: -6px;
+        margin-left: -2px;
+        z-index: 2;
+        border: 6px solid black;
+        border-right-color: transparent;
+        border-top-color: transparent;
+        border-bottom-color: transparent
+      }
+      #right_toggle_input:checked ~ #right_toggle {
+        right: 12px;
+      }
+      #right_toggle_input:checked ~ #right_toggle:before {
+        border-right-color: black;
+        border-left-color: transparent;
+      }
+      #right_toggle_input:checked ~ #twitch_chat {
+        display: none;
+      }
+      #right_toggle_input:checked ~ .main_column {
+        width: calc(100% - 30px);
+      }
+      #right_toggle_input:checked ~ .main_column #game_data {
+        width: calc(100% - 30px);
+      }
+      
+      #twitch_chat {
+        display: none;
+        position: fixed;
         right: 0px;
         top: 0px;
-        width: 25%;
+        z-index: 1;
+        width: 340px;
         height: 100%;
-        /* border: medium solid black; */
         padding: 0px;
         margin: 0px;
-        z-index: 1
       }
-      #twitchPlayer {
+
+      #twitch_player {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding: 0 0 56.25%;
+      }
+      #twitch_player iframe {
         position: absolute;
-        left: 0px;
-        top: 0px;
-        width: 75%;
-        height: auto;
-        /* border: medium solid black; */
-        padding: 0px;
-        z-index: 2
-      }
-      .player-video {
-        margin: auto;
-      }
-      #gameData {
-        position: absolute;
-        left: 0px;
-        bottom: 0px;
-        width: 75%;
-        height: 20%;
-        /* border: medium solid black; */
-        padding: 0px;
-        margin: 0px;
-        z-index: 2;
-      }
-      #gameData #Marauders {
-        position: absolute;
-        left: 0px;
-        top: 0px;
-        height: 100%;
-        width: 40%;
-      }
-      #gameData #OpFor {
-        position: absolute;
-        left: 40%;
-        bottom: 0px;
-        height: 100%;
-        width: 40%;
-      }
-      #gameData #Neutral{
-        position: absolute;
-        left: 80%;
-        bottom: 0px;
-        height: 100%;
-        width: 20%;
-      }
-      #gameData table {
         width: 100%;
         height: 100%;
-        border: 1px solid black;
-        border-collapse: collapse;
-        text-align: center;
       }
-      .grey {
-        background-color: #CCC;
-        width: 40%;
-        text-align: left;
+      #game_data {
+        overflow: hidden;
+        padding: 20px 30px 30px 30px;
+        width: 100%;
       }
-      #Neutral .grey {
-        background-color: #CCC;
-        width: 70%;
-        text-align: left;
+      #game_data .data_col {
+        width: 100%;
+        margin-bottom: 30px;
       }
-      #gameData * .gameDataTitle {
+      #game_data .data_col:last-child {
+        margin-bottom: 0;
+        margin-right: 0;
+      }
+      #game_data .data_col h2 {
         text-align: center;
         font-weight: bold;
+        margin: 0 0 10px;
+        font-size: 1.25rem;
+        line-height: 1.5rem;
+        font-weight: 700;
+      }
+      #game_data dl {
+        display: block;
+        overflow: hidden;
+        margin: 0;
+      }
+      #game_data dt {
+        clear: both;
+        width: 60%;
+      }
+      #game_data dd {
+        width: 40%;
+        text-align: right;
+        color: rgb(255,52,255);
+      }
+      #game_data dt, #game_data dd {
+        float: left;
+        display: block;
+        margin: 0;
+        padding: 5px;
+      }
+      #game_data dt:nth-of-type(odd), #game_data dd:nth-of-type(odd) {
+        background: rgba(0,0,0,.05);
+      }
+      #game_data dt:nth-of-type(even), #game_data dd:nth-of-type(even) {
+        border-bottom: 1px solid rgba(0,0,0,.05);
+      }
+
+
+      @media screen and (min-width: 650px) {
+        body {
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          background: #fff;
+        }
+        .main_column {
+          position: fixed;
+          height: 100%;
+        }
+        #twitch_player {
+          position: absolute;
+          height: calc(100% - 202px);
+          padding: 0;
+        }
+        #game_data {
+          position: fixed;
+          bottom: 0;
+          z-index: 2;
+          background: #efeef1;
+        }
+        #game_data .data_col {
+          float: left;
+          width: calc(33.33% - 20px);
+          margin-right: 30px;
+          margin-bottom: 0;
+        }
+        #game_data .data_col:last-child {
+          margin-right: 0;
+        }
+      }
+      @media screen and (min-width: 1200px) {
+        #right_toggle {
+          display: block;
+        }
+        .main_column {
+          width: calc(100% - 370px);
+          padding: 0 30px 0 0;
+        }
+        #game_data {
+          width: calc(100% - 370px);
+        }
+        #twitch_chat {
+          display: block;
+        }
       }
     </style>
 
+
+
   </head>
   <body>
-    <div id="twitchPlayer"></div>
-    <script type="text/javascript">
-        var vp = getViewport();
-        var options = {
-            width: vp[0]*.75-15,
-            height: (vp[0]*.75-15)*9/16,
-            channel: "hyperrpg",
-            //video: "{VIDEO_ID}"
-        };
-        var player = new Twitch.Player("twitchPlayer", options);
-        player.setVolume(0.5);
-    </script>
-    <div id="twitchChat"><iframe frameborder="0" scrolling="no" id="chat_embed"
-      src="http://www.twitch.tv/hyperrpg/chat" height="100%" width="100%"></iframe></div>
-    <div id="gameData">
-      <div id="Marauders">
-        <div id="MaraudersTitle" class="gameDataTitle">Marauders</div>
-        <table id="MarauderTable">
-          <tr>
-            <td colspan="2" class="grey">#CloseCall</td><td>0</td><td colspan="2" class="grey">#Intel</td><td>0</td>
-          </tr>
-          <tr>
-            <td colspan="2" class="grey">#Coryphee</td><td>0</td><td colspan="2" class="grey">#Talon</td><td>0</td>
-          </tr>
-          <tr>
-            <td colspan="2" class="grey">#Valravn</td><td>0</td><td colspan="2" class="grey">#Jackal</td><td>0</td>
-          </tr>
-        </table>
-      </div>
-      <div id="OpFor">
-        <div id="OpForTitle" class="gameDataTitle">Opposition Force</div>
-        <table id="OpForTable">
-          <tr>
-            <td colspan="2" class="grey">#Reroll</td><td>0</td><td colspan="2" class="grey">#SmokeScreen</td><td>0</td>
-          </tr>
-          <tr>
-            <td colspan="2" class="grey">#OpForBonus</td><td>0</td><td colspan="2" class="grey">#OpForBonus2</td><td>0</td>
-          </tr>
-          <tr>
-            <td colspan="2" class="grey">#OpForSpecial</td><td>0</td><td colspan="2" class="grey">--</td><td>0</td>
-          </tr>
-        </table>
-      </div>
-      <div id="Neutral">
-        <div id="NeutralTitle" class="gameDataTitle">Neutral</div>
-        <table id="NeutralTable">
-          <tr>
-            <td colspan="2" class="grey">#Disaster</td><td>0</td>
-          </tr>
-          <tr>
-            <td colspan="2" class="grey">#MapHazard</td><td>0</td>
-          </tr>
-        </table>
-      </div>
+
+    <input type="checkbox" id="right_toggle_input" class="hiden_checkbox">
+    <label for="right_toggle_input" id="right_toggle"></label>
+
+    <article class="main_column">
+      <div id="twitch_player"></div>
+
       <script type="text/javascript">
-      function updateTables() {
-        console.log("Updating Tables - dfa 2nd screen -")
+        var options = {
+            //video: "{VIDEO_ID}",
+            channel: "hyperrpg"
+        };
+        var player = new Twitch.Player("twitch_player", options);
+        player.setVolume(0.5);
+      </script>
+
+      <div id="game_data">
+        <div class="data_col">
+          <h2 id="marauder_title"></h2>
+          <dl id="marauder_list"></dl>
+        </div>
+        <div class="data_col">
+          <h2 id="op_for_title"></h2>
+          <dl id="op_for_list"></dl>
+        </div>
+        <div class="data_col">
+          <h2 id="neutral_title"></h2>
+          <dl id="neutral_list"></dl>
+        </div>
+      </div>
+
+    </article>
+
+    <aside id="twitch_chat"><iframe frameborder="0" scrolling="no" id="chat_embed" src="https://www.twitch.tv/hyperrpg/chat" height="100%" width="100%"></iframe></aside>
+
+
+    <script type="text/javascript">
+      function updateLists() {
+        console.log("Updating Lists - dfa 2nd screen -");
         var xhr = new XMLHttpRequest();
         xhr.open('GET', 'http://dfa.straylogic.com/data.php?show=16');
         xhr.onload = function () {
           if (xhr.status == 200) {
             var j = JSON.parse(xhr.responseText);
-            // known teams: 'Pre Battle', "'Mechs", 'Marauders', 'OpFor', 'Neutral'
+            console.log(j);
+            // known teams: 'Pre Battle', "'Mechs", 'marauders', 'op_for', 'neutral'
             var inBattle = true;
             for (i in j['data']) {
               var x = j['data'][i];
-              if (x['team'] == "Pre Battle") { inBattle = false; break;}
+              if (x['team'] == "Pre Battle") { inBattle = false; break; }
             }
             var mtc = 4, otc=4, ntc=2;
-            var mt = "<tr>", ot = "<tr>", nt = "<tr>";
+            var mt = "", ot = "", nt = "";
             if (!inBattle) {
-              console.log("Updating Tables - Not In Battle")
-              document.getElementById('MaraudersTitle').innerHTML = "Pre Battle";
-              document.getElementById('OpForTitle').innerHTML = "'Mechs'";
-              document.getElementById('NeutralTitle').innerHTML = "N/A";
+              console.log("Updating Lists - Not In Battle");
+              document.getElementById('marauder_title').innerHTML = "Pre Battle";
+              document.getElementById('op_for_title').innerHTML = "'Mechs'";
+              document.getElementById('neutral_title').innerHTML = "N/A";
               for (i in j['data']) {
                 var x = j['data'][i];
-                if (x['team'] == "'Mechs") {
-                  if (ot.length > 5 && (ot.match(/<td/g || []).length % 2) == 0) {
-                    ot += "</tr><tr>";
-                  }
-                  if (x['count'] >= x['purchase_limit']) { x['remaining'] = 0;}
-                  ot += "<td colspan='2' class='grey'>" + x['tag'] + " (" + x['title'] + ")</td><td>$" + x['remaining'] + " Remaining</td>";
-                } else if (x['team'] == 'Pre Battle') {
-                  if (mt.length > 5 && (mt.match(/<td/g || []).length % mtc) == 0) {
-                    mt += "</tr><tr>";
-                  }
-                  mt += "<td colspan='2' class='grey'>" + x['tag'] + "</td><td>" + x['count'] + '/' + x['purchase_limit'] + '</td>';
+                if (x['team'] == "'Mechs" && otc > 0) {
+                  if (x['count'] >= x['purchase_limit']) { x['remaining'] = 0; }
+                  ot += '<dt>' + x['tag'] + ' (' + x['title'] + ')</dt><dd>$' + x['remaining'] + ' Remaining</dd>';
+                  otc --;
+                } else if (x['team'] == 'Pre Battle' && mtc > 0) {
+                  mt += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '/' + x['purchase_limit'] + '</dd>';
+                  mtc --;
                 }
               }
-              console.log(mt + '</tr>');
-              console.log(ot + '</tr>');
-              document.getElementById('MarauderTable').innerHTML = mt + '</tr>';
-              document.getElementById('NeutralTable').innerHTML = '<tr><td colspan="2">-</td><td>-</td>';
-              document.getElementById('OpForTable').innerHTML = ot + '</tr>';
+              console.log(mt);
+              console.log(ot);
+              document.getElementById('marauder_list').innerHTML = mt;
+              document.getElementById('neutral_list').innerHTML = '';
+              document.getElementById('op_for_list').innerHTML = ot;
             } else {
-              console.log("Updating Tables - In Battle")
-              document.getElementById('MaraudersTitle').innerHTML = "Marauders";
-              document.getElementById('OpForTitle').innerHTML = "OpFor";
-              document.getElementById('NeutralTitle').innerHTML = "Neutral";
+              console.log("Updating Lists - In Battle")
+              document.getElementById('marauder_title').innerHTML = "Marauders";
+              document.getElementById('op_for_title').innerHTML = "Opposition";
+              document.getElementById('neutral_title').innerHTML = "Neutral";
               for (i in j['data']) {
                 var x = j['data'][i];
-                if (x['team'] == "Neutral") {
-                  if (nt.length > 5 && (nt.match(/<td/g || []).length % ntc) == 0) {
-                    nt += "</tr><tr>";
-                  }
-                  nt += "<td colspan='2' class='grey'>" + x['tag'] + "</td><td>" + x['count'] + "</td>";
-                } else if (x['team'] == "OpFor") {
-                  if (ot.length > 5 && (ot.match(/<td/g || []).length % otc) == 0) {
-                    ot += "</tr><tr>";
-                  }
-                  ot += "<td colspan='2' class='grey'>" + x['tag'] + "</td><td>" + x['count'] + "</td>";
-                } else if (x['team'] == 'Marauders') {
-                  if (mt.length > 5 && (mt.match(/<td/g || []).length % mtc) == 0) {
-                    mt += "</tr><tr>";
-                  }
-                  mt += "<td colspan='2' class='grey'>" + x['tag'] + "</td><td>" + x['count'] + '</td>';
+                if (x['team'] == "Neutral" && ntc > 0) {
+                  nt += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '</dd>';
+                  ntc --;
+                } else if (x['team'] == "OpFor" && otc > 0) {
+                  ot += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '</dd>';
+                  otc --;
+                } else if (x['team'] == 'Marauders' && mtc > 0) {
+                  mt += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '</dd>';
+                  mtc --;
                 }
               }
-              console.log(mt + '</tr>');
-              console.log(ot + '</tr>');
-              console.log(nt + '</tr>');
-              document.getElementById('MarauderTable').innerHTML = mt + '</tr>';
-              document.getElementById('NeutralTable').innerHTML = nt + '</tr>';
-              document.getElementById('OpForTable').innerHTML = ot + '</tr>';
+              console.log(mt);
+              console.log(ot);
+              console.log(nt);
+              document.getElementById('marauder_list').innerHTML = mt;
+              document.getElementById('neutral_list').innerHTML = nt;
+              document.getElementById('op_for_list').innerHTML = ot;
             }
           }
         }
-        console.log("Updating Tables - sending xhr");
+        console.log("Updating Lists - sending xhr");
         xhr.send();
-        console.log("Updating Tables - xhr sent");
-        setTimeout(updateTables, 30000);
+        console.log("Updating Lists - xhr sent");
+        setTimeout(updateLists, 30000);
       }
-      updateTables();
-      </script>
-    </div>
+      updateLists();
+    </script>
+
   </body>
 </html>
