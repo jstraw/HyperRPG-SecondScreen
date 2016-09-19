@@ -156,6 +156,7 @@
         display: block;
         margin: 0;
         padding: 5px;
+        border-bottom: 1px solid transparent;
       }
       #game_data dt:nth-of-type(odd), #game_data dd:nth-of-type(odd) {
         background: rgba(0,0,0,.05);
@@ -179,7 +180,7 @@
         }
         #twitch_player {
           position: absolute;
-          height: calc(100% - 202px);
+          height: 100%;
           padding: 0;
         }
         #game_data {
@@ -259,70 +260,68 @@
       function updateLists() {
         console.log("Updating Lists - dfa 2nd screen -");
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://dfa.straylogic.com/data.php?show=16');
+        xhr.open('GET', 'data-show16.js');
         xhr.onload = function () {
           if (xhr.status == 200) {
             var j = JSON.parse(xhr.responseText);
-            console.log(j);
             // known teams: 'Pre Battle', "'Mechs", 'marauders', 'op_for', 'neutral'
             var inBattle = true;
             for (i in j['data']) {
               var x = j['data'][i];
               if (x['team'] == "Pre Battle") { inBattle = false; break; }
             }
-            var mtc = 4, otc=4, ntc=2;
             var mt = "", ot = "", nt = "";
+            var cols = {'mtc':0, 'otc':0, 'ntc':0};
             if (!inBattle) {
-              console.log("Updating Lists - Not In Battle");
               document.getElementById('marauder_title').innerHTML = "Pre Battle";
               document.getElementById('op_for_title').innerHTML = "'Mechs'";
               document.getElementById('neutral_title').innerHTML = "N/A";
               for (i in j['data']) {
                 var x = j['data'][i];
-                if (x['team'] == "'Mechs" && otc > 0) {
+                if (x['team'] == "'Mechs") {
                   if (x['count'] >= x['purchase_limit']) { x['remaining'] = 0; }
                   ot += '<dt>' + x['tag'] + ' (' + x['title'] + ')</dt><dd>$' + x['remaining'] + ' Remaining</dd>';
-                  otc --;
-                } else if (x['team'] == 'Pre Battle' && mtc > 0) {
+                  cols.otc ++;
+                } else if (x['team'] == 'Pre Battle') {
                   mt += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '/' + x['purchase_limit'] + '</dd>';
-                  mtc --;
+                  cols.mtc ++;
                 }
               }
-              console.log(mt);
-              console.log(ot);
               document.getElementById('marauder_list').innerHTML = mt;
               document.getElementById('neutral_list').innerHTML = '';
               document.getElementById('op_for_list').innerHTML = ot;
             } else {
-              console.log("Updating Lists - In Battle")
               document.getElementById('marauder_title').innerHTML = "Marauders";
               document.getElementById('op_for_title').innerHTML = "Opposition";
               document.getElementById('neutral_title').innerHTML = "Neutral";
               for (i in j['data']) {
                 var x = j['data'][i];
-                if (x['team'] == "Neutral" && ntc > 0) {
+                if (x['team'] == "Neutral") {
                   nt += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '</dd>';
-                  ntc --;
-                } else if (x['team'] == "OpFor" && otc > 0) {
+                  cols.ntc ++;
+                } else if (x['team'] == "OpFor") {
                   ot += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '</dd>';
-                  otc --;
-                } else if (x['team'] == 'Marauders' && mtc > 0) {
+                  cols.otc ++;
+                } else if (x['team'] == 'Marauders') {
                   mt += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '</dd>';
-                  mtc --;
+                  cols.mtc ++;
                 }
               }
-              console.log(mt);
-              console.log(ot);
-              console.log(nt);
               document.getElementById('marauder_list').innerHTML = mt;
               document.getElementById('neutral_list').innerHTML = nt;
               document.getElementById('op_for_list').innerHTML = ot;
             }
           }
+
+          // calculate required height of data columns
+          var dt = 0;
+          for (i in cols) {
+            if (dt < cols[i]) { dt = cols[i]; }
+          }
+          var maxH = (dt * 30) + 34 + 50;
+          document.getElementById('twitch_player').style.height = 'calc(100% - ' + maxH + 'px)';
         }
-        console.log("Updating Lists - sending xhr");
         xhr.send();
-        console.log("Updating Lists - xhr sent");
         setTimeout(updateLists, 30000);
       }
       updateLists();
