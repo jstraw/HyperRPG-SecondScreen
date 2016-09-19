@@ -312,7 +312,7 @@
       function updateLists() {
         console.log("Updating Lists - dfa 2nd screen -");
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://dfa.straylogic.com/data.php?show=16');
+        xhr.open('GET', 'data-show16.js');
         xhr.onload = function () {
           if (xhr.status == 200) {
             var j = JSON.parse(xhr.responseText);
