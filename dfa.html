@@ -3,6 +3,9 @@
   <head>
     <title>Death from Above! Battletech on Hyper RPG</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
     <script src= "https://player.twitch.tv/js/embed/v1.js"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
@@ -42,6 +45,7 @@
       .main_column {
         position: relative;
         width: 100%;
+        background: #efeef1;
       }
 
       #right_toggle_input {
@@ -105,6 +109,10 @@
         margin: 0px;
       }
 
+      #twitch_player_wrapper {
+        position: static;
+        width: 100%;
+      }
       #twitch_player {
         position: relative;
         width: 100%;
@@ -120,6 +128,7 @@
         overflow: hidden;
         padding: 20px 30px 30px 30px;
         width: 100%;
+        background: #efeef1;
       }
       #game_data .data_col {
         width: 100%;
@@ -132,10 +141,11 @@
       #game_data .data_col h2 {
         text-align: center;
         font-weight: bold;
-        margin: 0 0 10px;
+        padding: 0 0 10px;
         font-size: 1.25rem;
         line-height: 1.5rem;
         font-weight: 700;
+        border-bottom: 1px solid rgba(0,0,0,.1);
       }
       #game_data dl {
         display: block;
@@ -155,7 +165,10 @@
         float: left;
         display: block;
         margin: 0;
-        padding: 5px;
+        padding: 0 5px;
+        border-bottom: 1px solid transparent;
+        height:29px;
+        line-height:29px;
       }
       #game_data dt:nth-of-type(odd), #game_data dd:nth-of-type(odd) {
         background: rgba(0,0,0,.05);
@@ -179,7 +192,6 @@
         }
         #twitch_player {
           position: absolute;
-          height: calc(100% - 202px);
           padding: 0;
         }
         #game_data {
@@ -213,6 +225,32 @@
           display: block;
         }
       }
+      @media screen and (min-width: 1600px) {
+        #twitch_player_wrapper {
+          position: absolute;
+          padding: 0;
+        }
+        #twitch_player {
+          position: static;
+          height: 100% !important;
+          overflow: visible;
+        }
+        #game_data .data_col.marauder, #game_data .data_col.op_for {
+          width: calc(40% - 20px);
+        }
+        #game_data .data_col.marauder dl, #game_data .data_col.op_for dl {
+          -moz-column-count: 2;
+          -moz-column-gap: 15px;
+          -webkit-column-count: 2;
+          -webkit-column-gap: 15px;
+          column-count: 2;
+          column-gap: 15px;
+        }
+        #game_data .data_col.neutral {
+          width: calc(20% - 20px);
+        }
+
+      }
     </style>
 
 
@@ -224,7 +262,9 @@
     <label for="right_toggle_input" id="right_toggle"></label>
 
     <article class="main_column">
-      <div id="twitch_player"></div>
+      <div id="twitch_player_wrapper">
+        <div id="twitch_player"></div>
+      </div>
 
       <script type="text/javascript">
         var options = {
@@ -236,15 +276,15 @@
       </script>
 
       <div id="game_data">
-        <div class="data_col">
+        <div class="data_col marauder">
           <h2 id="marauder_title"></h2>
           <dl id="marauder_list"></dl>
         </div>
-        <div class="data_col">
+        <div class="data_col op_for">
           <h2 id="op_for_title"></h2>
           <dl id="op_for_list"></dl>
         </div>
-        <div class="data_col">
+        <div class="data_col neutral">
           <h2 id="neutral_title"></h2>
           <dl id="neutral_list"></dl>
         </div>
@@ -263,66 +303,70 @@
         xhr.onload = function () {
           if (xhr.status == 200) {
             var j = JSON.parse(xhr.responseText);
-            console.log(j);
             // known teams: 'Pre Battle', "'Mechs", 'marauders', 'op_for', 'neutral'
             var inBattle = true;
             for (i in j['data']) {
               var x = j['data'][i];
               if (x['team'] == "Pre Battle") { inBattle = false; break; }
             }
-            var mtc = 4, otc=4, ntc=2;
             var mt = "", ot = "", nt = "";
+            var cols = {'mtc':0, 'otc':0, 'ntc':0};
             if (!inBattle) {
-              console.log("Updating Lists - Not In Battle");
               document.getElementById('marauder_title').innerHTML = "Pre Battle";
               document.getElementById('op_for_title').innerHTML = "'Mechs'";
               document.getElementById('neutral_title').innerHTML = "N/A";
               for (i in j['data']) {
                 var x = j['data'][i];
-                if (x['team'] == "'Mechs" && otc > 0) {
+                if (x['team'] == "'Mechs") {
                   if (x['count'] >= x['purchase_limit']) { x['remaining'] = 0; }
                   ot += '<dt>' + x['tag'] + ' (' + x['title'] + ')</dt><dd>$' + x['remaining'] + ' Remaining</dd>';
-                  otc --;
-                } else if (x['team'] == 'Pre Battle' && mtc > 0) {
+                  cols.otc ++;
+                } else if (x['team'] == 'Pre Battle') {
                   mt += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '/' + x['purchase_limit'] + '</dd>';
-                  mtc --;
+                  cols.mtc ++;
                 }
               }
-              console.log(mt);
-              console.log(ot);
               document.getElementById('marauder_list').innerHTML = mt;
               document.getElementById('neutral_list').innerHTML = '';
               document.getElementById('op_for_list').innerHTML = ot;
             } else {
-              console.log("Updating Lists - In Battle")
               document.getElementById('marauder_title').innerHTML = "Marauders";
               document.getElementById('op_for_title').innerHTML = "Opposition";
               document.getElementById('neutral_title').innerHTML = "Neutral";
               for (i in j['data']) {
                 var x = j['data'][i];
-                if (x['team'] == "Neutral" && ntc > 0) {
+                if (x['team'] == "Neutral") {
                   nt += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '</dd>';
-                  ntc --;
-                } else if (x['team'] == "OpFor" && otc > 0) {
+                  cols.ntc ++;
+                } else if (x['team'] == "OpFor") {
                   ot += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '</dd>';
-                  otc --;
-                } else if (x['team'] == 'Marauders' && mtc > 0) {
+                  cols.otc ++;
+                } else if (x['team'] == 'Marauders') {
                   mt += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '</dd>';
-                  mtc --;
+                  cols.mtc ++;
                 }
               }
-              console.log(mt);
-              console.log(ot);
-              console.log(nt);
               document.getElementById('marauder_list').innerHTML = mt;
               document.getElementById('neutral_list').innerHTML = nt;
               document.getElementById('op_for_list').innerHTML = ot;
             }
           }
+
+          // calculate required height of data columns
+          var dt = 0;
+          var maxH = 0;
+          for (i in cols) {
+            if (dt < cols[i]) { dt = cols[i]; }
+          }
+          // Set height for narrower screens when there is only one column per group
+          maxH = (dt * 29) + 34 + 50;
+          document.getElementById('twitch_player').style.height = 'calc(100% - ' + maxH + 'px)';
+
+          // Set height for wider screens when there are two columns per group
+          maxH = (Math.ceil(dt/2) * 29) + 34 + 50;
+          document.getElementById('twitch_player_wrapper').style.height = 'calc(100% - ' + maxH + 'px)';
         }
-        console.log("Updating Lists - sending xhr");
         xhr.send();
-        console.log("Updating Lists - xhr sent");
         setTimeout(updateLists, 30000);
       }
       updateLists();
