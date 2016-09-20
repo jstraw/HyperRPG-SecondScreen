@@ -236,9 +236,9 @@
           overflow: visible;
         }
         #game_data .data_col.players {
-          width: calc(80% - 20px);
+          width: calc(70% - 20px);
         }
-        #game_data .data_col.players dl {
+        #game_data .data_col dl {
           -moz-column-count: 2;
           -moz-column-gap: 15px;
           -moz-column-width: 100px;
@@ -250,11 +250,11 @@
         #game_data .data_col dd {
             width: 200px;
         }
-        #game_data .data_col.players dl dt {
+        #game_data .data_col dl dt {
           page-break-inside: avoid;
         }
         #game_data .data_col.neutral {
-          width: calc(20% - 20px);
+          width: calc(30% - 20px);
         }
         .5L {
             width: 5em;
@@ -339,7 +339,7 @@
           document.getElementById('twitch_player').style.height = 'calc(100% - ' + maxH + 'px)';
 
           // Set height for wider screens when there are two columns per group
-          maxH = (Math.ceil(dt/3) * 29) + 34 + 50;
+          maxH = (Math.ceil(dt/3) * 29) + 34;
           document.getElementById('twitch_player_wrapper').style.height = 'calc(100% - ' + maxH + 'px)';
         }
         xhr.send();
