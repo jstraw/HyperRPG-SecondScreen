@@ -173,6 +173,10 @@
         border-bottom: 1px solid rgba(0,0,0,.05);
       }
 
+      #game_data.dfa_prebattle .data_col:nth-of-type(3) {
+        display: none;
+      }
+
 
       @media screen and (min-width: 650px) {
         body {
@@ -199,12 +203,19 @@
           float: left;
           margin-right: 30px;
           margin-bottom: 0;
+        }
+
+        #game_data.dfa_prebattle .data_col {
           width: calc(50% - 15px);
         }
-        #game_data .data_col:nth-last-child(n + 3), #game_data .data_col:nth-last-child(n + 3) ~ .data_col {
+        #game_data.dfa_prebattle .data_col:nth-of-type(2) {
+          margin-right: 0;
+        }
+
+        #game_data.dfa_battle .data_col {
           width: calc(33.33% - 20px);
         }
-        #game_data .data_col:last-child {
+        #game_data.dfa_battle .data_col:nth-of-type(3) {
           margin-right: 0;
         }
 
@@ -240,10 +251,11 @@
           height: 100% !important;
           overflow: visible;
         }
-        #game_data .data_col:nth-last-child(n + 3), #game_data .data_col:nth-last-child(n + 3) ~ .data_col {
+
+        #game_data.dfa_battle .data_col:nth-of-type(1), #game_data.dfa_battle .data_col:nth-of-type(2) {
           width: calc(40% - 20px);
         }
-        #game_data .data_col:nth-last-child(n + 3) dl, #game_data .data_col:nth-last-child(n + 3) ~ .data_col dl {
+        #game_data.dfa_battle .data_col:nth-of-type(1) dl, #game_data.dfa_battle .data_col:nth-of-type(2) dl {
           -moz-column-count: 2;
           -moz-column-gap: 15px;
           -webkit-column-count: 2;
@@ -251,10 +263,10 @@
           column-count: 2;
           column-gap: 15px;
         }
-        #game_data #neutral_col {
+        #game_data.dfa_battle .data_col:nth-of-type(3) {
           width: calc(20% - 20px);
         }
-        #game_data #neutral_col dl {
+        #game_data.dfa_battle .data_col:nth-of-type(3) dl {
           -moz-column-count: 1;
           -webkit-column-count: 1;
           column-count: 1;
@@ -278,8 +290,8 @@
 
       <script type="text/javascript">
         var options = {
-            //video: "{VIDEO_ID}",
-            channel: "hyperrpg"
+          //video: "{VIDEO_ID}",
+          channel: "hyperrpg"
         };
         var player = new Twitch.Player("twitch_player", options);
         player.setVolume(0.5);
@@ -322,12 +334,11 @@
             var mt = "", ot = "", nt = "";
             var cols = {'mtc':0, 'otc':0, 'ntc':0};
             if (!inBattle) {
-              document.getElementById('marauder_title').innerHTML = "Pre-Battle";
-              document.getElementById('op_for_title').innerHTML = "Mechs";
+              //add class for dfa_prebattle to apply data column styles
+              document.getElementById('game_data').className = 'dfa_prebattle';
 
-              //Remove the neutral column
-              var neutralCol = document.getElementById("neutral_col");
-              neutralCol.parentNode.removeChild(neutralCol);
+              document.getElementById('marauder_title').innerHTML = "Pre-Battle";
+              document.getElementById('op_for_title').innerHTML = "'Mechs";
               for (i in j['data']) {
                 var x = j['data'][i];
                 if (x['team'] == "'Mechs") {
@@ -353,6 +364,9 @@
               document.getElementById('twitch_player').style.height = 'calc(100% - ' + maxH + 'px)';
               document.getElementById('twitch_player_wrapper').style.height = 'calc(100% - ' + maxH + 'px)';
             } else {
+              //add class for dfa_battle to apply data column styles
+              document.getElementById('game_data').className = 'dfa_battle';
+
               document.getElementById('marauder_title').innerHTML = "Marauders";
               document.getElementById('op_for_title').innerHTML = "Opposition";
               document.getElementById('neutral_title').innerHTML = "Neutral";
