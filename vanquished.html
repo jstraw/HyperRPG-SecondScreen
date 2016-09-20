@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Death from Above! Battletech on Hyper RPG</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <script src= "https://player.twitch.tv/js/embed/v1.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+
+    <style type="text/css">
+      * {
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+        font-size: 100%;
+        letter-spacing: -.01em;
+        color: #444;
+        background: #efeef1;
+      }
+      article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+        display: block;
+      }
+      h1, h2, h3, h4, h5, p, ul, li {
+        margin: 0;
+        padding: 0;
+        font-size: 1rem;
+        line-height: 1.4rem;
+        font-weight: 400;
+      }
+      a {
+        color: #444;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .main_column {
+        position: relative;
+        width: 100%;
+        background: #efeef1;
+      }
+
+      #right_toggle_input {
+        display: none;
+      }
+      #right_toggle {
+        display: none;
+        position: absolute;
+        top: 5px;
+        right: 345px;
+        z-index: 1;
+        width: 20px;
+        height: 20px;
+        opacity: .25;
+        cursor: pointer;
+      }
+      #right_toggle:hover {
+        opacity: .5;
+      }
+      #right_toggle:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        margin-top: -6px;
+        margin-left: -2px;
+        z-index: 2;
+        border: 6px solid black;
+        border-right-color: transparent;
+        border-top-color: transparent;
+        border-bottom-color: transparent
+      }
+      #right_toggle_input:checked ~ #right_toggle {
+        right: 12px;
+      }
+      #right_toggle_input:checked ~ #right_toggle:before {
+        border-right-color: black;
+        border-left-color: transparent;
+      }
+      #right_toggle_input:checked ~ #twitch_chat {
+        display: none;
+      }
+      #right_toggle_input:checked ~ .main_column {
+        width: calc(100% - 30px);
+      }
+      #right_toggle_input:checked ~ .main_column #game_data {
+        width: calc(100% - 30px);
+      }
+
+      #twitch_chat {
+        display: none;
+        position: fixed;
+        right: 0px;
+        top: 0px;
+        z-index: 1;
+        width: 340px;
+        height: 100%;
+        padding: 0px;
+        margin: 0px;
+      }
+
+      #twitch_player_wrapper {
+        position: static;
+        width: 100%;
+        z-index: 3;
+      }
+      #twitch_player {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding: 0 0 56.25%;
+        z-index: 3;
+      }
+      #twitch_player iframe {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      #game_data {
+        overflow: hidden;
+        padding: 20px 30px 30px 30px;
+        width: 100%;
+        background: #efeef1;
+      }
+      #game_data .data_col {
+        width: 100%;
+        margin-bottom: 30px;
+      }
+      #game_data .data_col:last-child {
+        margin-bottom: 0;
+        margin-right: 0;
+      }
+      #game_data .data_col h2 {
+        text-align: center;
+        font-weight: bold;
+        padding: 0 0 10px;
+        font-size: 1.25rem;
+        line-height: 1.5rem;
+        font-weight: 700;
+        border-bottom: 1px solid rgba(0,0,0,.1);
+      }
+      #game_data dl {
+        display: block;
+        overflow: hidden;
+        margin: 0;
+      }
+      #game_data dt {
+        clear: both;
+        width: 60%;
+      }
+      #game_data dd {
+        width: 40%;
+        text-align: right;
+        color: rgb(255,52,255);
+      }
+      #game_data dt, #game_data dd {
+        display: inline-block;
+        margin: 0;
+        padding: 0 5px;
+        border-bottom: 1px solid transparent;
+        height:29px;
+        line-height:29px;
+      }
+      #game_data dt:nth-of-type(odd), #game_data dd:nth-of-type(odd) {
+        background: rgba(0,0,0,.05);
+      }
+      #game_data dt:nth-of-type(even), #game_data dd:nth-of-type(even) {
+        border-bottom: 1px solid rgba(0,0,0,.05);
+      }
+
+
+      @media screen and (min-width: 650px) {
+        body {
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          background: #fff;
+        }
+        .main_column {
+          position: fixed;
+          height: 100%;
+        }
+        #twitch_player {
+          position: absolute;
+          padding: 0;
+        }
+        #game_data {
+          position: fixed;
+          bottom: 0;
+          z-index: 2;
+        }
+        #game_data .data_col {
+          float: left;
+          width: calc(33.33% - 20px);
+          margin-right: 30px;
+          margin-bottom: 0;
+        }
+        #game_data .data_col:last-child {
+          margin-right: 0;
+        }
+      }
+      @media screen and (min-width: 1200px) {
+        #right_toggle {
+          display: block;
+        }
+        .main_column {
+          width: calc(100% - 370px);
+          padding: 0 30px 0 0;
+        }
+        #game_data {
+          width: calc(100% - 370px);
+        }
+        #twitch_chat {
+          display: block;
+        }
+      }
+      @media screen and (min-width: 1600px) {
+        #twitch_player_wrapper {
+          position: absolute;
+          padding: 0;
+        }
+        #twitch_player {
+          position: static;
+          height: 100% !important;
+          overflow: visible;
+        }
+        #game_data .data_col.players, #game_data .data_col.op_for {
+          width: calc(40% - 20px);
+        }
+        #game_data .data_col.players dl {
+          -moz-column-count: 3;
+          -moz-column-gap: 15px;
+          -moz-column-width: 200px;
+          -webkit-column-count: 3;
+          -webkit-column-gap: 15px;
+          column-count: 3;
+          column-gap: 15px;
+        }
+        #game_data .data_col.op_for dl {
+          -moz-column-count: 2;
+          -moz-column-gap: 15px;
+          -moz-column-fill: balance;
+          -webkit-column-count: 2;
+          -webkit-column-gap: 15px;
+          column-count: 2;
+          column-gap: 15px;
+        }
+        #game_data .data_col.players dl dt {
+          page-break-inside: avoid;
+        }
+        #game_data .data_col.neutral {
+          width: calc(20% - 20px);
+        }
+
+      }
+    </style>
+
+
+
+  </head>
+  <body>
+
+    <input type="checkbox" id="right_toggle_input" class="hiden_checkbox">
+    <label for="right_toggle_input" id="right_toggle"></label>
+
+    <article class="main_column">
+      <div id="twitch_player_wrapper">
+        <div id="twitch_player"></div>
+      </div>
+
+      <script type="text/javascript">
+        var options = {
+            //video: "{VIDEO_ID}",
+            channel: "hyperrpg"
+        };
+        var player = new Twitch.Player("twitch_player", options);
+        player.setVolume(0.5);
+      </script>
+
+      <div id="game_data">
+        <div class="data_col players">
+          <h2 id="players_title"></h2>
+          <dl id="players_list"></dl>
+        </div>
+      </div>
+
+    </article>
+
+    <aside id="twitch_chat"><iframe frameborder="0" scrolling="no" id="chat_embed" src="https://www.twitch.tv/hyperrpg/chat" height="100%" width="100%"></iframe></aside>
+
+
+    <script type="text/javascript">
+      function updateLists() {
+        console.log("Updating Lists - dfa 2nd screen -");
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://dfa.straylogic.com/data.php?show=3');
+        xhr.onload = function () {
+          if (xhr.status == 200) {
+            var j = JSON.parse(xhr.responseText);
+            var mt = "", ot = "", nt = "";
+            var cols = {'mtc':0, 'otc':0, 'ntc':0};
+
+            document.getElementById('players_title').innerHTML = "Marauders";
+            for (i in j['data']) {
+                var x = j['data'][i];
+                mt += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '</dd>';
+                cols.mtc ++;
+            }
+            document.getElementById('players_list').innerHTML = mt;
+          }
+
+          // calculate required height of data columns
+          var dt = 0;
+          var maxH = 0;
+          for (i in cols) {
+            if (dt < cols[i]) { dt = cols[i]; }
+          }
+          // Set height for narrower screens when there is only one column per group
+          maxH = (dt * 29) + 34 + 50;
+          document.getElementById('twitch_player').style.height = 'calc(100% - ' + maxH + 'px)';
+
+          // Set height for wider screens when there are two columns per group
+          maxH = (Math.ceil(dt/2) * 29) + 34 + 50;
+          document.getElementById('twitch_player_wrapper').style.height = 'calc(100% - ' + maxH + 'px)';
+        }
+        xhr.send();
+        setTimeout(updateLists, 30000);
+      }
+      updateLists();
+    </script>
+
+  </body>
+</html>
