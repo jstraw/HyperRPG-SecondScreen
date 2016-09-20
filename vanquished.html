@@ -311,8 +311,8 @@
               for (i in j['data']) {
                 var x = j['data'][i];
                 if (x['team'] == "Players") {
-                  ot += '<dt>' + x['tag'] + '</dt><dd><progress max="100" value="' + x['current'] +'"></progress> + ' + x['count'] + ' Plot Points</dd>';
-                  cols.otc ++;
+                  mt += '<dt>' + x['tag'] + '</dt><dd><progress max="100" value="' + x['current'] +'"></progress> + ' + x['count'] + ' Plot Points</dd>';
+                  cols.mtc ++;
               } else if (x['team'] == 'GM') {
                   nt += '<dt>' + x['tag'] + '</dt><dd><progress max="100" value="' + x['current'] +'"></progress> + ' + x['count'] + ' Plot Points</dd>';
                   cols.ntc ++;
