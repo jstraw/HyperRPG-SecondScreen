@@ -90,12 +90,6 @@
       #right_toggle_input:checked ~ #twitch_chat {
         display: none;
       }
-      #right_toggle_input:checked ~ .main_column {
-        width: calc(100% - 30px);
-      }
-      #right_toggle_input:checked ~ .main_column #game_data {
-        width: calc(100% - 30px);
-      }
       
       #twitch_chat {
         display: none;
@@ -156,10 +150,10 @@
       }
       #game_data dt {
         clear: both;
-        width: 60%;
+        width: 50%;
       }
       #game_data dd {
-        width: 40%;
+        width: 50%;
         text-align: right;
         color: rgb(255,52,255);
       }
@@ -170,12 +164,17 @@
         border-bottom: 1px solid transparent;
         height:29px;
         line-height:29px;
+        white-space: nowrap;
       }
       #game_data dt:nth-of-type(odd), #game_data dd:nth-of-type(odd) {
         background: rgba(0,0,0,.05);
       }
       #game_data dt:nth-of-type(even), #game_data dd:nth-of-type(even) {
         border-bottom: 1px solid rgba(0,0,0,.05);
+      }
+
+      #game_data.dfa_prebattle .data_col:nth-of-type(3) {
+        display: none;
       }
 
 
@@ -202,17 +201,34 @@
         }
         #game_data .data_col {
           float: left;
-          width: calc(33.33% - 20px);
           margin-right: 30px;
           margin-bottom: 0;
         }
-        #game_data .data_col:last-child {
+
+        #game_data.dfa_prebattle .data_col {
+          width: calc(50% - 15px);
+        }
+        #game_data.dfa_prebattle .data_col:nth-of-type(2) {
           margin-right: 0;
         }
+
+        #game_data.dfa_battle .data_col {
+          width: calc(33.33% - 20px);
+        }
+        #game_data.dfa_battle .data_col:nth-of-type(3) {
+          margin-right: 0;
+        }
+
       }
       @media screen and (min-width: 1200px) {
         #right_toggle {
           display: block;
+        }
+        #right_toggle_input:checked ~ .main_column {
+          width: calc(100% - 30px);
+        }
+        #right_toggle_input:checked ~ .main_column #game_data {
+          width: calc(100% - 30px);
         }
         .main_column {
           width: calc(100% - 370px);
@@ -235,32 +251,25 @@
           height: 100% !important;
           overflow: visible;
         }
-        #game_data .data_col.marauder, #game_data .data_col.op_for {
+
+        #game_data.dfa_battle .data_col:nth-of-type(1), #game_data.dfa_battle .data_col:nth-of-type(2) {
           width: calc(40% - 20px);
         }
-        #game_data .data_col.marauder dl {
+        #game_data.dfa_battle .data_col:nth-of-type(1) dl, #game_data.dfa_battle .data_col:nth-of-type(2) dl {
           -moz-column-count: 2;
           -moz-column-gap: 15px;
-          -moz-column-width: 200px;
           -webkit-column-count: 2;
           -webkit-column-gap: 15px;
           column-count: 2;
           column-gap: 15px;
         }
-        #game_data .data_col.op_for dl {
-          -moz-column-count: 2;
-          -moz-column-gap: 15px;
-          -moz-column-fill: balance;
-          -webkit-column-count: 2;
-          -webkit-column-gap: 15px;
-          column-count: 2;
-          column-gap: 15px;
-        }
-        #game_data .data_col.marauder dl dt {
-          page-break-inside: avoid;
-        }
-        #game_data .data_col.neutral {
+        #game_data.dfa_battle .data_col:nth-of-type(3) {
           width: calc(20% - 20px);
+        }
+        #game_data.dfa_battle .data_col:nth-of-type(3) dl {
+          -moz-column-count: 1;
+          -webkit-column-count: 1;
+          column-count: 1;
         }
 
       }
@@ -281,23 +290,23 @@
 
       <script type="text/javascript">
         var options = {
-            //video: "{VIDEO_ID}",
-            channel: "hyperrpg"
+          //video: "{VIDEO_ID}",
+          channel: "hyperrpg"
         };
         var player = new Twitch.Player("twitch_player", options);
         player.setVolume(0.5);
       </script>
 
       <div id="game_data">
-        <div class="data_col marauder">
+        <div class="data_col" id="marauder_col">
           <h2 id="marauder_title"></h2>
           <dl id="marauder_list"></dl>
         </div>
-        <div class="data_col op_for">
+        <div class="data_col" id="op_for_col">
           <h2 id="op_for_title"></h2>
           <dl id="op_for_list"></dl>
         </div>
-        <div class="data_col neutral">
+        <div class="data_col" id="neutral_col">
           <h2 id="neutral_title"></h2>
           <dl id="neutral_list"></dl>
         </div>
@@ -325,9 +334,11 @@
             var mt = "", ot = "", nt = "";
             var cols = {'mtc':0, 'otc':0, 'ntc':0};
             if (!inBattle) {
-              document.getElementById('marauder_title').innerHTML = "Pre Battle";
-              document.getElementById('op_for_title').innerHTML = "'Mechs'";
-              document.getElementById('neutral_title').innerHTML = "N/A";
+              //add class for dfa_prebattle to apply data column styles
+              document.getElementById('game_data').className = 'dfa_prebattle';
+
+              document.getElementById('marauder_title').innerHTML = "Pre-Battle";
+              document.getElementById('op_for_title').innerHTML = "'Mechs";
               for (i in j['data']) {
                 var x = j['data'][i];
                 if (x['team'] == "'Mechs") {
@@ -340,9 +351,22 @@
                 }
               }
               document.getElementById('marauder_list').innerHTML = mt;
-              document.getElementById('neutral_list').innerHTML = '';
               document.getElementById('op_for_list').innerHTML = ot;
+
+              // calculate required height of data columns
+              var dt = 0;
+              var maxH = 0;
+              for (i in cols) {
+                if (dt < cols[i]) { dt = cols[i]; }
+              }
+              // Set height for narrower screens when there is only one column per group
+              maxH = (dt * 29) + 34 + 50;
+              document.getElementById('twitch_player').style.height = 'calc(100% - ' + maxH + 'px)';
+              document.getElementById('twitch_player_wrapper').style.height = 'calc(100% - ' + maxH + 'px)';
             } else {
+              //add class for dfa_battle to apply data column styles
+              document.getElementById('game_data').className = 'dfa_battle';
+
               document.getElementById('marauder_title').innerHTML = "Marauders";
               document.getElementById('op_for_title').innerHTML = "Opposition";
               document.getElementById('neutral_title').innerHTML = "Neutral";
@@ -362,22 +386,22 @@
               document.getElementById('marauder_list').innerHTML = mt;
               document.getElementById('neutral_list').innerHTML = nt;
               document.getElementById('op_for_list').innerHTML = ot;
+
+              // calculate required height of data columns
+              var dt = 0;
+              var maxH = 0;
+              for (i in cols) {
+                if (dt < cols[i]) { dt = cols[i]; }
+              }
+              // Set height for narrower screens when there is only one column per group
+              maxH = (dt * 29) + 34 + 50;
+              document.getElementById('twitch_player').style.height = 'calc(100% - ' + maxH + 'px)';
+
+              // Set height for wider screens when there are two columns per group
+              maxH = (Math.ceil(dt/2) * 29) + 34 + 50;
+              document.getElementById('twitch_player_wrapper').style.height = 'calc(100% - ' + maxH + 'px)';
             }
           }
-
-          // calculate required height of data columns
-          var dt = 0;
-          var maxH = 0;
-          for (i in cols) {
-            if (dt < cols[i]) { dt = cols[i]; }
-          }
-          // Set height for narrower screens when there is only one column per group
-          maxH = (dt * 29) + 34 + 50;
-          document.getElementById('twitch_player').style.height = 'calc(100% - ' + maxH + 'px)';
-
-          // Set height for wider screens when there are two columns per group
-          maxH = (Math.ceil(dt/2) * 29) + 34 + 50;
-          document.getElementById('twitch_player_wrapper').style.height = 'calc(100% - ' + maxH + 'px)';
         }
         xhr.send();
         setTimeout(updateLists, 30000);
