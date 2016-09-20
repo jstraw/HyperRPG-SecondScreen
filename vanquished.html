@@ -235,7 +235,7 @@
           height: 100% !important;
           overflow: visible;
         }
-        #game_data .data_col.players, #game_data .data_col.op_for {
+        #game_data .data_col.players {
           width: calc(40% - 20px);
         }
         #game_data .data_col.players dl {
@@ -245,15 +245,6 @@
           -webkit-column-count: 3;
           -webkit-column-gap: 15px;
           column-count: 3;
-          column-gap: 15px;
-        }
-        #game_data .data_col.op_for dl {
-          -moz-column-count: 2;
-          -moz-column-gap: 15px;
-          -moz-column-fill: balance;
-          -webkit-column-count: 2;
-          -webkit-column-gap: 15px;
-          column-count: 2;
           column-gap: 15px;
         }
         #game_data .data_col.players dl dt {
@@ -290,8 +281,12 @@
 
       <div id="game_data">
         <div class="data_col players">
-          <h2 id="players_title"></h2>
-          <dl id="players_list"></dl>
+          <h2 id="marauder_title"></h2>
+          <dl id="marauder_list"></dl>
+        </div>
+        <div class="data_col neutral">
+          <h2 id="neutral_title"></h2>
+          <dl id="neutral_list"></dl>
         </div>
       </div>
 
@@ -302,22 +297,29 @@
 
     <script type="text/javascript">
       function updateLists() {
-        console.log("Updating Lists - dfa 2nd screen -");
+        console.log("Updating Lists - vanquished 2nd screen -");
         var xhr = new XMLHttpRequest();
         xhr.open('GET', 'http://dfa.straylogic.com/data.php?show=3');
         xhr.onload = function () {
           if (xhr.status == 200) {
             var j = JSON.parse(xhr.responseText);
+            // known teams: 'Heros?', 'GM'
             var mt = "", ot = "", nt = "";
             var cols = {'mtc':0, 'otc':0, 'ntc':0};
-
-            document.getElementById('players_title').innerHTML = "Marauders";
-            for (i in j['data']) {
+              document.getElementById('players_title').innerHTML = "Heros?";
+              document.getElementById('neutral_title').innerHTML = "GM";
+              for (i in j['data']) {
                 var x = j['data'][i];
-                mt += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '</dd>';
-                cols.mtc ++;
-            }
-            document.getElementById('players_list').innerHTML = mt;
+                if (x['team'] == "Players") {
+                  ot += '<dt>' + x['tag'] + '</dt><dd><progress max="100" value="' + x['current'] +'"></progress> + ' + x['count'] + ' Plot Points</dd>';
+                  cols.otc ++;
+                } else if (x['team'] == 'Pre Battle') {
+                  mt += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '/' + x['purchase_limit'] + '</dd>';
+                  cols.mtc ++;
+                }
+              }
+              document.getElementById('marauder_list').innerHTML = mt;
+              document.getElementById('neutral_list').innerHTML = nt;
           }
 
           // calculate required height of data columns
