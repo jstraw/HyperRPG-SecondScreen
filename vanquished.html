@@ -281,8 +281,8 @@
 
       <div id="game_data">
         <div class="data_col players">
-          <h2 id="marauder_title"></h2>
-          <dl id="marauder_list"></dl>
+          <h2 id="players_title"></h2>
+          <dl id="players_list"></dl>
         </div>
         <div class="data_col neutral">
           <h2 id="neutral_title"></h2>
@@ -299,7 +299,7 @@
       function updateLists() {
         console.log("Updating Lists - vanquished 2nd screen -");
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://dfa.straylogic.com/data.php?show=3');
+        xhr.open('GET', 'http://dfa.straylogic.com/qdata.php?show=3');
         xhr.onload = function () {
           if (xhr.status == 200) {
             var j = JSON.parse(xhr.responseText);
@@ -313,12 +313,12 @@
                 if (x['team'] == "Players") {
                   ot += '<dt>' + x['tag'] + '</dt><dd><progress max="100" value="' + x['current'] +'"></progress> + ' + x['count'] + ' Plot Points</dd>';
                   cols.otc ++;
-                } else if (x['team'] == 'Pre Battle') {
-                  mt += '<dt>' + x['tag'] + '</dt><dd>' + x['count'] + '/' + x['purchase_limit'] + '</dd>';
-                  cols.mtc ++;
+              } else if (x['team'] == 'GM') {
+                  nt += '<dt>' + x['tag'] + '</dt><dd><progress max="100" value="' + x['current'] +'"></progress> + ' + x['count'] + ' Plot Points</dd>';
+                  cols.ntc ++;
                 }
               }
-              document.getElementById('marauder_list').innerHTML = mt;
+              document.getElementById('players_list').innerHTML = mt;
               document.getElementById('neutral_list').innerHTML = nt;
           }
 
