@@ -241,14 +241,16 @@
         #game_data .data_col dl {
           -moz-column-count: 2;
           -moz-column-gap: 15px;
-          -moz-column-width: 100px;
           -webkit-column-count: 2;
           -webkit-column-gap: 15px;
           column-count: 2;
           column-gap: 15px;
+          overflow: visible;
         }
         #game_data .data_col dd {
             width: 200px;
+            float: right;
+
         }
         #game_data .data_col dl dt {
           page-break-inside: avoid;
