@@ -241,13 +241,13 @@
         #game_data .data_col.players dl {
           -moz-column-count: 2;
           -moz-column-gap: 15px;
-          -moz-column-width: 200px;
+          -moz-column-width: 100px;
           -webkit-column-count: 2;
           -webkit-column-gap: 15px;
           column-count: 2;
           column-gap: 15px;
         }
-        #game_data .data_col.players dd {
+        #game_data .data_col dd {
             width: 200px;
         }
         #game_data .data_col.players dl dt {
@@ -255,6 +255,9 @@
         }
         #game_data .data_col.neutral {
           width: calc(20% - 20px);
+        }
+        .5L {
+            width: 5em;
         }
 
       }
@@ -314,10 +317,10 @@
               for (i in j['data']) {
                 var x = j['data'][i];
                 if (x['team'] == "Players") {
-                  mt += '<dt>' + x['tag'] + '</dt><dd><progress max="100" value="' + x['current'] +'"></progress> + ' + x['count'] + '</dd>';
+                  mt += '<dt>' + x['tag'] + '</dt><dd><progress max="100" value="' + x['current'] +'"></progress> + <span class="5L">' + x['count'] + '</span></dd>';
                   cols.mtc ++;
               } else if (x['team'] == 'GM') {
-                  nt += '<dt>' + x['tag'] + '</dt><dd><progress max="100" value="' + x['current'] +'"></progress> + ' + x['count'] + '</dd>';
+                  nt += '<dt>' + x['tag'] + '</dt><dd><progress max="100" value="' + x['current'] +'"></progress> + <span class="5L">' + x['count'] + '</span></dd>';
                   cols.ntc ++;
                 }
               }
